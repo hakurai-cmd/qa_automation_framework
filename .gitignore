@@ -1,0 +1,18 @@
+# Кэш Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Среда разработки
+.idea/
+.vscode/
+
+# Локальные конфиги и секреты
+.env
+
+# Логи и отчеты (они генерируются заново при каждом запуске)
+logs/
+allure-results/
+allure-report/
+venv/
