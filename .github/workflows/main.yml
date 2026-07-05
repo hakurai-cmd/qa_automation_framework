@@ -1,0 +1,47 @@
+name: UI Tests Automation
+
+# 1. ТРИГГЕРЫ: когда запускать пайплайн?
+on:
+  push:
+    branches: [ "main" ]                  # При пуше в ветку main
+  pull_request:
+    branches: [ "main" ]                  # При создании PR в main
+  workflow_dispatch:                      # Кнопка для ручного запуска из интерфейса GitHub
+  schedule:
+    - cron: '0 2 * * *'                   # Ночной прогон: каждый день в 02:00
+
+# 2. ДЖОБЫ: что именно делать?
+jobs:
+  test-ui:
+    runs-on: ubuntu-latest                # Поднимаем чистую виртуалку на Linux
+    
+    # 3. ШАГИ: последовательность команд внутри виртуалки
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4         # Шаг 1: Скачиваем твой код из GitHub в виртуалку
+
+      - name: Set up Python
+        uses: actions/setup-python@v5     # Шаг 2: Устанавливаем Python
+        with:
+          python-version: "3.11"          # Фиксируем версию
+
+      - name: Install dependencies
+        run: |                            # Шаг 3: Ставим библиотеки
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install Chrome and ChromeDriver
+        run: |                            # Шаг 4: Подготовка браузера (в Linux нет UI)
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      - name: Run Pytest tests
+        run: pytest tests/ --alluredir=allure-results
+        continue-on-error: true           # Идем дальше, даже если тесты упали (чтобы сохранить отчет)
+
+      - name: Save Allure Results as Artifact
+        uses: actions/upload-artifact@v4  # Шаг 5: Сохраняем сырые результаты Allure
+        with:
+          name: allure-results
+          path: allure-results
+          retention-days: 7               # Храним архив 7 дней

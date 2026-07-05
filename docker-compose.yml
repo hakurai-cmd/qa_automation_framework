@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  # Наш сервис с автотестами (собирается на основе Dockerfile)
+  autotests:
+    build: .
+    volumes:
+      - ./allure-results:/app/allure-results # Пробрасываем папку наружу, чтобы забрать отчеты
+      - ./logs:/app/logs
+    environment:
+      - CI=true # Сигнализируем conftest.py, что нужно работать в headless-режиме
