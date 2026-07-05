@@ -1,0 +1,26 @@
+{
+  "env": {
+    "base_url": "https://www.saucedemo.com/"
+  },
+  "users": {
+    "standard_user": {
+      "username": "standard_user",
+      "password": "secret_sauce"
+    },
+    "locked_out_user": {
+      "username": "locked_out_user",
+      "password": "secret_sauce"
+    },
+    "problem_user": {
+      "username": "problem_user",
+      "password": "secret_sauce"
+    }
+  },
+  "products": {
+    "backpack_name": "Sauce Labs Backpack",
+    "bolt_t_shirt_name": "Sauce Labs Bolt T-Shirt"
+  },
+  "expected_conditions": {
+    "inventory_items_count": 6
+  }
+}
